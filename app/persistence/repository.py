@@ -55,7 +55,7 @@ class MemoryRepository(IRepository):
         existing_object = await self.get(obj_id=obj_id, session=session)
         data = obj.dict()
 
-        for key, value in data:
+        for key, value in data.items():
             setattr(existing_object, key, value)
         
         session.commit()
