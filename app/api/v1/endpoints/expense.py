@@ -28,6 +28,24 @@ async def get_all_expenses(
         data.append(expense.to_dict())
     return data
 
+@router.get('/by-amount', response_model=List[ExpenseModel], status_code=status.HTTP_200_OK)
+async def get_expenses_by_amount(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+    amount: int = 0
+):
+    expenses = await facade.get_expenses_by_amount(db=db, owner_id = current_user.id, amount=amount)
+    if not expenses:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='Expenses Not Found'
+        )
+    data = []
+    for expense in expenses:
+        data.append(expense.to_dict())
+    return data
+
+
 @router.get('/{expense_id}', response_model=ExpenseModel, status_code=status.HTTP_200_OK)
 async def get_expense(
     expense_id,

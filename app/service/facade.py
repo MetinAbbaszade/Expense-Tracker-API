@@ -50,3 +50,13 @@ class Facade:
     
     async def delete_expense(self, expense_id, db: AsyncSession):
         return await self.expense_repo.delete(obj_id=expense_id, session=db)
+    
+    async def get_expenses_by_amount(self,owner_id, amount: int, db: AsyncSession):
+        all_expense: List[Expense] = await self.expense_repo.get_all(session=db)
+
+        data = []
+
+        for expense in all_expense:
+            if expense.owner_id == owner_id and expense.amount <= amount:
+                data.append(expense)
+        return data
