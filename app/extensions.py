@@ -6,6 +6,6 @@ def get_db():
     Session = sessionmaker(autoflush=False, autocommit=False, bind=engine)
     db = Session()
     try:
-        yield db()
+        yield db
     finally:
         db.close()

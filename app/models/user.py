@@ -16,9 +16,12 @@ class User(BaseModel, table=True):
             self.password = self.hash_password(kwargs['password'])
 
         
+    @staticmethod
     def hash_password(password):
         return pwd_context.hash(password)
     
+
+    @staticmethod
     def verify_password(plain_password, hashed_password):
         return pwd_context.verify(plain_password, hashed_password)
     
